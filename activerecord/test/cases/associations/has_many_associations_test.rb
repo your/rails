@@ -424,13 +424,15 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_create_resets_cached_counters
-    person = Person.create!(:first_name => 'tenderlove')
+    Reader.delete_all
+
+    person = Person.create!(first_name: 'tenderlove')
     post   = Post.first
 
     assert_equal [], person.readers
     assert_nil person.readers.find_by_post_id(post.id)
 
-    person.readers.create(:post_id => post.id)
+    person.readers.create(post_id: post.id)
 
     assert_equal 1, person.readers.count
     assert_equal 1, person.readers.length
